@@ -1,123 +1,61 @@
-@media(max-width:425px)
-{body{
-    background : url("/static/web3.jpg");
-    background-size: 1200px;
-    min-height: 100%;
-    background-position: center;
-    background-size: cover;
-
-
-}
-
-.button {
-  display: inline-block;
-  border-radius: 4px;
-  background-color: #f4511e;
-  border: none;
-  color: #FFFFFF;
-  text-align: center;
-  font-size: 28px;
-  padding: 20px;
-  padding-left:100px;
-  padding-right:50px;
-  width: 200px;
-  transition: all 0.5s;
-  cursor: pointer;
-  margin: 5px;
-  position: absolute;
-  left: 250px;
-  top: 200px;
-
-}
-
-
-}
 body {
-    background : url("/static/web3.jpg") ;
-    background-size: 1200px;
-    min-height: 100%;
-    background-position: center;
-    background-size: cover;
+  margin: 0;
+  padding: 0;
+  font-family: 'Raleway', sans-serif;
+  background: url('bg1.avif') no-repeat center center fixed;
+  background-size: cover;
+  color: #222;
 }
 
-body, html {height: 100%}
-h3{
-    font-family: "Raleway", sans-serif;
-    font-size: 20px;
-    color: white;
-    position: absolute;
-    right: 30px;
-    top: 30px;
-}
-
-
-h1{
-    font-family: "Raleway", sans-serif;
-    font-size: 50px;
-    color: white;
-    position: absolute;
-    left: 250px;
-    top: 150px;
-}
-a:link {
-  color: red;
-  display: inline-block;
-}
-
-/* visited link */
-a:visited {
-  color: blue;
-}
-
-/* mouse over link */
-a:hover {
-  color: hotpink;
-}
-
-/* selected link */
-a:active {
-  color: blue;
-}
-
-.button {
-  display: inline-block;
-  border-radius: 4px;
-  background-color: #f4511e;
-  border: none;
-  color: #FFFFFF;
-  text-align: center;
-  font-size: 28px;
+.overlay {
+  background-color: rgba(255, 255, 255, 0.4);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
-  width: 200px;
-  transition: all 0.5s;
-  cursor: pointer;
-  margin: 5px;
-  position: absolute;
-  left: 450px;
-  top: 300px;
 }
 
-.button span {
-  cursor: pointer;
+.content {
+  text-align: center;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  background-color: #ffffffd9;
+}
+
+h1 {
+  font-size: 72px; /* 3x typical size */
+  margin-bottom: 40px;
+  color: #2c3e50;
+}
+
+.buttons {
+  margin-top: 30px;
+}
+
+.btn {
   display: inline-block;
-  position: relative;
-  transition: 0.5s;
+  margin: 15px;
+  padding: 16px 28px;
+  background-color: #f0f0f0;
+  color: #222;
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-.button span:after {
-  content: '\00bb';
-  position: absolute;
-  opacity: 0;
-  top: 0;
-  right: -20px;
-  transition: 0.5s;
+.btn:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-2px);
 }
 
-.button:hover span {
-  padding-right: 25px;
-}
-
-.button:hover span:after {
-  opacity: 1;
-  right: 0;
+.icon {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  margin-right: 10px;
 }
