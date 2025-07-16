@@ -1,27 +1,15 @@
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>ChatApp Welcome</title>
-  <link rel="stylesheet" href="{% static 'style.css' %}">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-</head>
-<body>
-  <div class="overlay">
-    <div class="content">
-      <h1>Welcome to Chat Application</h1>
-      <div class="buttons">
-        <a href="{% url 'sign_in' %}" class="btn">
-          <img src="https://cdn-icons-png.flaticon.com/128/992/992651.png" alt="login" class="icon">
-          Login
-        </a>
-        <a href="{% url 'signup' %}" class="btn">
-          <img src="https://cdn-icons-png.flaticon.com/128/1828/1828490.png" alt="signup" class="icon">
-          Register
-        </a>
-      </div>
-    </div>
-  </div>
-</body>
-</html>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Index</title>
+{#  Main HomePage contain links for login and registration #}
+{% block content %}
+<center>
+    <h1> Welcome to Chat application Bridge For Sonata users </h1><br><br>
+    <button class="button" style="vertical-align:middle"><span><a href="{% url 'sign_in' %}">Login</a></span></button><br>
+    <h3><a href="{% url 'signup' %}">Click Here to register!</a></h3><br><br>
+    </center>
+</center>>
+{% endblock %}
