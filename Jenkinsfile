@@ -21,10 +21,10 @@ pipeline {
     stage('Install yq (YAML Processor)') {
       steps {
         sh '''
-          if ! command -v yq &> /dev/null; then
-            echo "Installing yq..."
-            curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o /usr/local/bin/yq
-            chmod +x /usr/local/bin/yq
+          if ! [ -f ./yq ]; then
+            echo "Downloading yq..."
+            curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o ./yq
+            chmod +x ./yq
           fi
         '''
       }
@@ -58,10 +58,10 @@ pipeline {
         script {
           def imageTagFull = "${ECR_REPO}:${IMAGE_TAG}"
           sh """
-            yq eval '.backend.image = "${imageTagFull}"' -i helm/values.yaml
+            ./yq eval '.backend.image = "${imageTagFull}"' -i helm/values.yaml
 
             echo "Updated values.yaml:"
-            yq eval '.backend' helm/values.yaml
+            ./yq eval '.backend' helm/values.yaml
           """
         }
       }
