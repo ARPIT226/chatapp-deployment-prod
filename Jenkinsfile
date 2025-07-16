@@ -7,7 +7,7 @@ pipeline {
     IMAGE_TAG = "build-${BUILD_NUMBER}"
     GIT_REPO = 'https://github.com/ARPIT226/chat_app.git'
     GIT_BRANCH = 'main'
-    GIT_CREDENTIALS_ID = 'github-access-token' // GitHub PAT stored as Jenkins "Username with password"
+    GIT_CREDENTIALS_ID = 'github-access-token'   // GitHub PAT stored as Jenkins "Username with password"
   }
 
   stages {
@@ -15,6 +15,18 @@ pipeline {
     stage('Checkout Code') {
       steps {
         git credentialsId: "${GIT_CREDENTIALS_ID}", url: "${GIT_REPO}", branch: "${GIT_BRANCH}"
+      }
+    }
+
+    stage('Install yq (YAML Processor)') {
+      steps {
+        sh '''
+          if ! command -v yq &> /dev/null; then
+            echo "Installing yq..."
+            curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o /usr/local/bin/yq
+            chmod +x /usr/local/bin/yq
+          fi
+        '''
       }
     }
 
@@ -44,16 +56,13 @@ pipeline {
     stage('Update Helm values.yaml') {
       steps {
         script {
-          def valuesFile = 'helm/values.yaml'
-          def imageLine = "image: \\\"${ECR_REPO}:${IMAGE_TAG}\\\""
-
-          // Safely update image field while preserving indentation
+          def imageTagFull = "${ECR_REPO}:${IMAGE_TAG}"
           sh """
-            sed -i '/backend:/,/^[^[:space:]]/s/^\\( *\\)image:.*$/\\1${imageLine}/' ${valuesFile}
-          """
+            yq eval '.backend.image = "${imageTagFull}"' -i helm/values.yaml
 
-          // Show result
-          sh "grep -A 2 'backend:' ${valuesFile}"
+            echo "Updated values.yaml:"
+            yq eval '.backend' helm/values.yaml
+          """
         }
       }
     }
@@ -66,7 +75,7 @@ pipeline {
             git config user.email "${GIT_USER}@users.noreply.github.com"
 
             git add helm/values.yaml
-            git commit -m "Update image tag to ${IMAGE_TAG}" || true
+            git commit -m "Update image tag to ${IMAGE_TAG}" || echo "No changes to commit"
             git push https://${GIT_USER}:${GIT_PASS}@github.com/ARPIT226/chat_app.git HEAD:${GIT_BRANCH}
           """
         }
