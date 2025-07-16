@@ -7,7 +7,7 @@ pipeline {
     IMAGE_TAG = "build-${BUILD_NUMBER}"
     GIT_REPO = 'https://github.com/ARPIT226/chat_app.git'
     GIT_BRANCH = 'main'
-    GIT_CREDENTIALS_ID = 'github-access-token'   // GitHub PAT stored as Jenkins "Username with password"
+    GIT_CREDENTIALS_ID = 'github-access-token' // GitHub PAT stored as Jenkins "Username with password"
   }
 
   stages {
@@ -45,11 +45,11 @@ pipeline {
       steps {
         script {
           def valuesFile = 'helm/values.yaml'
-          def imageLine = "  image: \\\"${ECR_REPO}:${IMAGE_TAG}\\\""  // << Wrapped in quotes
+          def imageLine = "image: \\\"${ECR_REPO}:${IMAGE_TAG}\\\""
 
-          // Update the image line under backend block
+          // Safely replace image line while preserving indentation
           sh """
-            sed -i '/backend:/,/image:/s|image:.*|${imageLine}|' ${valuesFile}
+            sed -i '/backend:/,/image:/s|\\( *\\)image:.*|\\1${imageLine}|' ${valuesFile}
           """
 
           sh "grep image: ${valuesFile}"
