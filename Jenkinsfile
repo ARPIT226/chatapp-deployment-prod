@@ -47,12 +47,13 @@ pipeline {
           def valuesFile = 'helm/values.yaml'
           def imageLine = "image: \\\"${ECR_REPO}:${IMAGE_TAG}\\\""
 
-          // Safely replace image line while preserving indentation
+          // Safely update image field while preserving indentation
           sh """
-            sed -i '/backend:/,/image:/s|\\( *\\)image:.*|\\1${imageLine}|' ${valuesFile}
+            sed -i '/backend:/,/^[^[:space:]]/s/^\\( *\\)image:.*$/\\1${imageLine}/' ${valuesFile}
           """
 
-          sh "grep image: ${valuesFile}"
+          // Show result
+          sh "grep -A 2 'backend:' ${valuesFile}"
         }
       }
     }
