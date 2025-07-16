@@ -32,7 +32,7 @@ frontend:
 
 backend:
   replicas: 1
-      image: "262194309205.dkr.ecr.eu-west-2.amazonaws.com/chatapp-django:build-23"
+  image: "262194309205.dkr.ecr.eu-west-2.amazonaws.com/chatapp-django:build-23"
 
   affinity:
     zone1: eu-west-2a
