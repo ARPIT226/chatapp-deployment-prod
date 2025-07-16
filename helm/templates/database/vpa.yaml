@@ -1,0 +1,15 @@
+{{- if .Values.database.vpa.enabled }}
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ include "chatapp.fullname" . }}-mysql-vpa
+  labels:
+    app: {{ include "chatapp.name" . }}
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: {{ include "chatapp.fullname" . }}-mysql
+  updatePolicy:
+    updateMode: "{{ .Values.database.vpa.updateMode }}"
+{{- end }}

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.backend.env.configMapName }}
+  labels:
+    app: {{ .Chart.Name }}-backend
+
+data:
+  DB_NAME: {{ .Values.backend.env.dbName }}
+  DB_HOST: {{ .Values.backend.env.dbHost }}
+  DB_PORT: "{{ .Values.backend.env.dbPort }}"

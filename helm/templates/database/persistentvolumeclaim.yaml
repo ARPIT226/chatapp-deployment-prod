@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.database.volume.pvcName }}
+  labels:
+    app: {{ .Chart.Name }}-database
+
+spec:
+  accessModes:
+    - ReadWriteOnce
+
+  resources:
+    requests:
+      storage: {{ .Values.database.volume.size }}
+  storageClassName: {{ .Values.database.volume.storageClassName | default "gp2" | quote }}

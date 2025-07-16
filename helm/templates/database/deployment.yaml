@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-database
+  labels:
+    app: {{ .Chart.Name }}-database
+
+spec:
+  replicas: {{ .Values.database.replicas }}
+
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-database
+
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-database
+
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - {{ .Values.database.affinity.zone }}
+
+      containers:
+        - name: mysql
+          image: {{ .Values.database.image }}
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 3306
+
+          resources:
+            requests:
+              cpu: "{{ .Values.database.resources.requests.cpu }}"
+              memory: "{{ .Values.database.resources.requests.memory }}"
+            limits:
+              cpu: "{{ .Values.database.resources.limits.cpu }}"
+              memory: "{{ .Values.database.resources.limits.memory }}"
+
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.backend.env.configMapName }}
+            - secretRef:
+                name: {{ .Values.backend.env.secretName }}
+
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+
+          readinessProbe:
+            tcpSocket:
+              port: 3306
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            failureThreshold: 5
+            timeoutSeconds: 5
+
+          livenessProbe:
+            tcpSocket:
+              port: 3306
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 5
+            timeoutSeconds: 5
+
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.database.volume.pvcName }}

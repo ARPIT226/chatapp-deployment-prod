@@ -1,0 +1,99 @@
+# frontend configuration values for chatapp
+
+frontend:
+  replicas: 1
+  image: 262194309205.dkr.ecr.eu-west-2.amazonaws.com/chatapp-nginx
+
+  affinity:
+    zone1: eu-west-2a
+    zone2: eu-west-2b
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "250m"
+      memory: "512Mi"
+
+  service:
+    type: ClusterIP
+
+  ingress:
+    host: 0209.store
+
+  hpa:
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 5
+    cpuUtilization: 50
+
+# backend configuration values for chatapp
+
+backend:
+  replicas: 1
+  image: 262194309205.dkr.ecr.eu-west-2.amazonaws.com/chatapp-django
+
+  affinity:
+    zone1: eu-west-2a
+    zone2: eu-west-2b
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "250m"
+      memory: "512Mi"
+
+  env:
+    configMapName: chatapp-config
+    secretName: chatapp-secret
+    dbName: chatappdb
+    dbHost: mysql
+    dbPort: "3306"
+    mysqlRootPassword: Jodhpur@21
+    dbUser: arpit
+    dbPassword: Jodhpur@21
+
+  service:
+    type: ClusterIP
+
+  hpa:
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 5
+    cpuUtilization: 60
+
+# database configuration values for chatapp
+
+database:
+  replicas: 1
+  image: 262194309205.dkr.ecr.eu-west-2.amazonaws.com/chatapp-mysql
+
+  affinity:
+    zone: eu-west-2b
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+
+  volume:
+    pvcName: mysql-pvc
+    size: 5Gi
+
+  service:
+    type: ClusterIP
+
+  vpa:
+    enabled: false
+    updateMode: "Auto"
+
+serviceAccount:
+  create: false
+  name: ""
+  automount: true
