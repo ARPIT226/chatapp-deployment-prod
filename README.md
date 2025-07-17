@@ -12,3 +12,9 @@ https://chestnut-pruner-9c8.notion.site/3-TIER-APPLICATION-DEPLOYMENT-1f83d6811a
 
 ## Successfully the changes are deployed on the application
 <img width="959" height="339" alt="image" src="https://github.com/user-attachments/assets/85129e86-a042-4a77-bd58-176e5d870475" />
+
+## Prometheus UI
+<img width="959" height="389" alt="image" src="https://github.com/user-attachments/assets/a2ad9f32-196f-4b02-bcb3-f3adf929cb2c" />
+
+## Grafana Dashboard
+<img width="959" height="511" alt="image" src="https://github.com/user-attachments/assets/64a13627-e65b-48c4-ae42-56c7858eeb3d" />
