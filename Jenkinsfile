@@ -7,7 +7,7 @@ pipeline {
     IMAGE_TAG = "build-${BUILD_NUMBER}"
     GIT_REPO = 'https://github.com/ARPIT226/chat_app.git'
     GIT_BRANCH = 'main'
-    GIT_CREDENTIALS_ID = 'github-access-token'   // GitHub PAT stored as Jenkins "Username with password"
+    GIT_CREDENTIALS_ID = 'github-access-token' // GitHub PAT stored as Jenkins "Username with password"
   }
 
   stages {
@@ -71,11 +71,16 @@ pipeline {
       steps {
         withCredentials([usernamePassword(credentialsId: "${GIT_CREDENTIALS_ID}", usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
           sh """
-            git config user.name "$GIT_USER"
-            git config user.email "${GIT_USER}@users.noreply.github.com"
+            git config --global user.name "$GIT_USER"
+            git config --global user.email "${GIT_USER}@users.noreply.github.com"
 
-            git add helm/values.yaml
-            git commit -m "Update image tag to ${IMAGE_TAG}" || echo "No changes to commit"
+            # Add all changes in the repo
+            git add .
+
+            # Commit all changes
+            git commit -m "CI: Update image tag to ${IMAGE_TAG} and push full repo" || echo "No changes to commit"
+
+            # Push changes back to the repo
             git push https://${GIT_USER}:${GIT_PASS}@github.com/ARPIT226/chat_app.git HEAD:${GIT_BRANCH}
           """
         }
@@ -91,7 +96,6 @@ pipeline {
         """
       }
     }
-
   }
 
   post {
