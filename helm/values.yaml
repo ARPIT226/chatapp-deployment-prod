@@ -25,7 +25,7 @@ frontend:
 # backend configuration values for chatapp
 backend:
   replicas: 1
-  image: "262194309205.dkr.ecr.eu-west-2.amazonaws.com/chatapp-django:build-33"
+  image: "262194309205.dkr.ecr.eu-west-2.amazonaws.com/chatapp-django:build-34"
   affinity:
     zone1: eu-west-2a
     zone2: eu-west-2b
