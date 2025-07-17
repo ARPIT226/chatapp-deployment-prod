@@ -1,0 +1,11 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: backend-pdb
+  annotations:
+    description: "Make sure atleast one backend pod is preventing from eviction during disruptions"
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: django
