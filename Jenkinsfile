@@ -9,7 +9,7 @@ pipeline {
     SRC_BRANCH = 'main'
     DEPLOY_REPO = 'https://github.com/ARPIT226/chatapp-deployment-prod.git'
     DEPLOY_BRANCH = 'main'
-    GIT_CREDENTIALS_ID = 'github-access-token' // GitHub PAT stored in Jenkins
+    GIT_CREDENTIALS_ID = 'github-access-token'
   }
 
   stages {
@@ -30,13 +30,8 @@ pipeline {
       steps {
         withAWS(credentials: 'aws-ecr-creds', region: "${AWS_REGION}") {
           sh """
-            echo "Logging in to ECR..."
             aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO
-
-            echo "Tagging image..."
             docker tag chatapp-django:$IMAGE_TAG $ECR_REPO:$IMAGE_TAG
-
-            echo "Pushing to ECR..."
             docker push $ECR_REPO:$IMAGE_TAG
           """
         }
