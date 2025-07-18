@@ -5,7 +5,7 @@ pipeline {
     AWS_REGION = 'eu-west-2'
     ECR_REPO = '262194309205.dkr.ecr.eu-west-2.amazonaws.com/chatapp-django'
     IMAGE_TAG = "build-${BUILD_NUMBER}"
-    GIT_REPO = 'https://github.com/ARPIT226/chat_app.git'
+    GIT_REPO = 'https://github.com/ARPIT226/chatapp-source-code.git'
     GIT_BRANCH = 'main'
     GIT_CREDENTIALS_ID = 'github-access-token' // GitHub PAT stored as Jenkins "Username with password"
   }
@@ -81,7 +81,7 @@ pipeline {
             git commit -m "CI: Update image tag to ${IMAGE_TAG} and push full repo" || echo "No changes to commit"
 
             # Push changes back to the repo
-            git push https://${GIT_USER}:${GIT_PASS}@github.com/ARPIT226/chat_app.git HEAD:${GIT_BRANCH}
+            git push https://${GIT_USER}:${GIT_PASS}@github.com/ARPIT226/chatapp-source-code.git HEAD:${GIT_BRANCH}
           """
         }
       }
