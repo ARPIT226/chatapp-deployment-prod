@@ -64,9 +64,9 @@ pipeline {
       steps {
         dir('deployment') {
           sh '''
-            ./yq eval ".image.tag = \\"${IMAGE_TAG}\\"" -i helm/values.yaml
-            echo "Updated values.yaml:"
-            cat helm/values.yaml
+            ./yq eval ".backend.image = \\"${ECR_REPO}:${IMAGE_TAG}\\"" -i helm/values.yaml
+            echo "Updated backend.image:"
+            grep "backend:" -A 6 helm/values.yaml
           '''
         }
       }
@@ -80,7 +80,7 @@ pipeline {
               git config --global user.name "$GIT_USER"
               git config --global user.email "${GIT_USER}@users.noreply.github.com"
               git add helm/values.yaml
-              git commit -m "CI: Update image tag to ${IMAGE_TAG}" || echo "No changes to commit"
+              git commit -m "CI: Update backend image tag to ${IMAGE_TAG}" || echo "No changes to commit"
               git push https://${GIT_USER}:${GIT_PASS}@github.com/ARPIT226/chatapp-deployment-prod.git HEAD:${DEPLOY_BRANCH}
             '''
           }
