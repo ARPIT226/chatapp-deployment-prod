@@ -22,12 +22,10 @@ frontend:
     minReplicas: 2
     maxReplicas: 5
     cpuUtilization: 50
-
 # backend configuration values for chatapp
-
 backend:
   replicas: 1
-  image: "262194309205.dkr.ecr.eu-west-2.amazonaws.com/chatapp-django:build-59"
+  image: "262194309205.dkr.ecr.eu-west-2.amazonaws.com/chatapp-django:build-60"
   affinity:
     zone1: eu-west-2a
     zone2: eu-west-2b
@@ -54,9 +52,7 @@ backend:
     minReplicas: 2
     maxReplicas: 5
     cpuUtilization: 60
-
 # database configuration values for chatapp
-
 database:
   replicas: 1
   image: 262194309205.dkr.ecr.eu-west-2.amazonaws.com/chatapp-mysql
