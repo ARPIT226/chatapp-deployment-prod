@@ -1,12 +1,14 @@
-{{/*
-Return chart name (needed for HPA to work)
-*/}}
+{{/* Define the chart name */}}
 {{- define "chatapp.name" -}}
-{{- .Chart.Name -}}
+{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end }}
-{{/*
-Return chart name (needed for HPA to work)
-*/}}
-{{- define "chatapp.name" -}}
-{{- .Chart.Name -}}
+
+{{/* Define the full name */}}
+{{- define "chatapp.fullname" -}}
+{{- if .Values.fullnameOverride }}
+{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else }}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end }}
 {{- end }}
