@@ -78,4 +78,4 @@ serviceAccount:
   name: ""
   automount: true
 image:
-  tag: build-52
+  tag: build-53
