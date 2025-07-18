@@ -48,7 +48,7 @@ backend:
   service:
     type: ClusterIP
   hpa:
-    enabled: false
+    enabled: true
     minReplicas: 2
     maxReplicas: 5
     cpuUtilization: 60
