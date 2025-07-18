@@ -9,7 +9,7 @@ spec:
   targetRef:
     apiVersion: "apps/v1"
     kind: Deployment
-    name: chatapp-mysql
+    name: chatapp-database
   updatePolicy:
     updateMode: "Auto"
 {{- end }}
