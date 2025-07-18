@@ -1,8 +1,8 @@
 ## Refer this for deployment chatapp in aws:
 https://chestnut-pruner-9c8.notion.site/3-TIER-APPLICATION-DEPLOYMENT-1f83d6811a7380078bb4d30d030616c1?pvs=74
 
-## Horizontal pod autoscaling for backend and frontend applications
-<img width="594" height="124" alt="image" src="https://github.com/user-attachments/assets/a86e9461-1670-49c2-be49-5ffac603afe3" />
+## Horizontal pod autoscaling for backend, frontend and Vertical pod autoscaling for database
+<img width="541" height="83" alt="image" src="https://github.com/user-attachments/assets/fe4e2fa0-058f-420a-a4ec-a76e5e0f3471" />
 
 ## Build Jenkins Job for testing and catching bugs
 <img width="959" height="475" alt="image" src="https://github.com/user-attachments/assets/7ab2e18f-b9b1-4d11-84e2-e24daecca199" />
