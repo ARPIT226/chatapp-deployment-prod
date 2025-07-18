@@ -6,11 +6,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/ARPIT226/chatapp-source-code.git
+    repoURL: https://github.com/ARPIT226/chatapp-deployment-prod.git
     targetRevision: main
     path: helm
   destination:
-    server: https://kubernetes.default.svc
+    server: https://kubernetes.default.svcs
     namespace: default
   syncPolicy:
     automated:
