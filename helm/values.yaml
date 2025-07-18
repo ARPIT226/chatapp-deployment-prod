@@ -18,7 +18,7 @@ frontend:
   ingress:
     host: 0209.store
   hpa:
-    enabled: false
+    enabled: true
     minReplicas: 2
     maxReplicas: 5
     cpuUtilization: 50
@@ -71,7 +71,7 @@ database:
   service:
     type: ClusterIP
   vpa:
-    enabled: false
+    enabled: true
     updateMode: "Auto"
 serviceAccount:
   create: false
