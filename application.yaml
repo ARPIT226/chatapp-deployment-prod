@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/ARPIT226/chat_app.git
+    repoURL: https://github.com/ARPIT226/chatapp-source-code.git
     targetRevision: main
     path: helm
   destination:
