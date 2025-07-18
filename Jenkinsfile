@@ -53,26 +53,26 @@ pipeline {
 
     stage('Install yq') {
       steps {
-        sh '''
-          if ! [ -f ./yq ]; then
-            echo "Installing yq..."
-            curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o ./yq
-            chmod +x ./yq
-          fi
-        '''
+        dir('deployment') {
+          sh '''
+            if ! [ -f yq ]; then
+              echo "Installing yq..."
+              curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o yq
+              chmod +x yq
+            fi
+          '''
+        }
       }
     }
 
     stage('Update Helm values.yaml') {
       steps {
         dir('deployment') {
-          script {
-            sh '''
-              ../yq eval '.image.tag = "${IMAGE_TAG}"' -i helm/values.yaml
-              echo "Updated values.yaml:"
-              cat helm/values.yaml
-            '''
-          }
+          sh '''
+            ./yq eval ".image.tag = \\"${IMAGE_TAG}\\"" -i helm/values.yaml
+            echo "Updated values.yaml:"
+            cat helm/values.yaml
+          '''
         }
       }
     }
