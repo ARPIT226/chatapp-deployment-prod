@@ -77,3 +77,5 @@ serviceAccount:
   create: false
   name: ""
   automount: true
+image:
+  tag: ${IMAGE_TAG}
