@@ -8,7 +8,7 @@ https://chestnut-pruner-9c8.notion.site/3-TIER-APPLICATION-DEPLOYMENT-1f83d6811a
 <img width="959" height="475" alt="image" src="https://github.com/user-attachments/assets/7ab2e18f-b9b1-4d11-84e2-e24daecca199" />
 
 ## Argo CD - Deployment and Health Status
-<img width="959" height="451" alt="image" src="https://github.com/user-attachments/assets/56be57f3-4785-49b4-9ff0-a8b549739b64" />
+![Uploading image.png…]()
 
 ## Application Status
 <img width="959" height="451" alt="image" src="https://github.com/user-attachments/assets/efd1925f-6723-4128-8bb1-7186bc370fd8" />
