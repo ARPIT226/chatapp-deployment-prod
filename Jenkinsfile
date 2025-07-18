@@ -5,32 +5,22 @@ pipeline {
     AWS_REGION = 'eu-west-2'
     ECR_REPO = '262194309205.dkr.ecr.eu-west-2.amazonaws.com/chatapp-django'
     IMAGE_TAG = "build-${BUILD_NUMBER}"
-    GIT_REPO = 'https://github.com/ARPIT226/chatapp-source-code.git'
-    GIT_BRANCH = 'main'
-    GIT_CREDENTIALS_ID = 'github-access-token' // GitHub PAT stored as Jenkins "Username with password"
+    SRC_REPO = 'https://github.com/ARPIT226/chatapp-source-code.git'
+    SRC_BRANCH = 'main'
+    DEPLOY_REPO = 'https://github.com/ARPIT226/chatapp-deployment-prod.git'
+    DEPLOY_BRANCH = 'main'
+    GIT_CREDENTIALS_ID = 'github-access-token' // GitHub PAT stored in Jenkins
   }
 
   stages {
 
-    stage('Checkout Code') {
+    stage('Checkout Source Code') {
       steps {
-        git credentialsId: "${GIT_CREDENTIALS_ID}", url: "${GIT_REPO}", branch: "${GIT_BRANCH}"
+        git credentialsId: "${GIT_CREDENTIALS_ID}", url: "${SRC_REPO}", branch: "${SRC_BRANCH}"
       }
     }
 
-    stage('Install yq (YAML Processor)') {
-      steps {
-        sh '''
-          if ! [ -f ./yq ]; then
-            echo "Downloading yq..."
-            curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o ./yq
-            chmod +x ./yq
-          fi
-        '''
-      }
-    }
-
-    stage('Docker Build') {
+    stage('Build Docker Image') {
       steps {
         sh "docker build -t chatapp-django:${IMAGE_TAG} ."
       }
@@ -53,36 +43,52 @@ pipeline {
       }
     }
 
+    stage('Checkout Deployment Repo') {
+      steps {
+        dir('deployment') {
+          git credentialsId: "${GIT_CREDENTIALS_ID}", url: "${DEPLOY_REPO}", branch: "${DEPLOY_BRANCH}"
+        }
+      }
+    }
+
+    stage('Install yq') {
+      steps {
+        sh '''
+          if ! [ -f ./yq ]; then
+            echo "Installing yq..."
+            curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o ./yq
+            chmod +x ./yq
+          fi
+        '''
+      }
+    }
+
     stage('Update Helm values.yaml') {
       steps {
-        script {
-          def imageTagFull = "${ECR_REPO}:${IMAGE_TAG}"
-          sh """
-            ./yq eval '.backend.image = "${imageTagFull}"' -i helm/values.yaml
-
-            echo "Updated values.yaml:"
-            ./yq eval '.backend' helm/values.yaml
-          """
+        dir('deployment') {
+          script {
+            sh '''
+              ../yq eval '.image.tag = "${IMAGE_TAG}"' -i helm/values.yaml
+              echo "Updated values.yaml:"
+              cat helm/values.yaml
+            '''
+          }
         }
       }
     }
 
     stage('Push changes to GitHub') {
       steps {
-        withCredentials([usernamePassword(credentialsId: "${GIT_CREDENTIALS_ID}", usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
-          sh """
-            git config --global user.name "$GIT_USER"
-            git config --global user.email "${GIT_USER}@users.noreply.github.com"
-
-            # Add all changes in the repo
-            git add .
-
-            # Commit all changes
-            git commit -m "CI: Update image tag to ${IMAGE_TAG} and push full repo" || echo "No changes to commit"
-
-            # Push changes back to the repo
-            git push https://${GIT_USER}:${GIT_PASS}@github.com/ARPIT226/chatapp-source-code.git HEAD:${GIT_BRANCH}
-          """
+        dir('deployment') {
+          withCredentials([usernamePassword(credentialsId: "${GIT_CREDENTIALS_ID}", usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+            sh '''
+              git config --global user.name "$GIT_USER"
+              git config --global user.email "${GIT_USER}@users.noreply.github.com"
+              git add helm/values.yaml
+              git commit -m "CI: Update image tag to ${IMAGE_TAG}" || echo "No changes to commit"
+              git push https://${GIT_USER}:${GIT_PASS}@github.com/ARPIT226/chatapp-deployment-prod.git HEAD:${DEPLOY_BRANCH}
+            '''
+          }
         }
       }
     }
