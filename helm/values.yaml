@@ -19,7 +19,7 @@ frontend:
     host: 0209.store
   hpa:
     enabled: true
-    minReplicas: 2
+    minReplicas: 3
     maxReplicas: 5
     cpuUtilization: 50
 # backend configuration values for chatapp
