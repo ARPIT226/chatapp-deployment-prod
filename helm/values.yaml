@@ -24,7 +24,7 @@ frontend:
     cpuUtilization: 50
 # backend configuration values for chatapp
 backend:
-  replicas: 1
+  replicas: 2
   image: "262194309205.dkr.ecr.eu-west-2.amazonaws.com/chatapp-django:build-62"
   affinity:
     zone1: eu-west-2a
