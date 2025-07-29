@@ -1,7 +1,7 @@
 # frontend configuration values for chatapp
 
 frontend:
-  replicas: 2
+  replicas: 4
   image: 262194309205.dkr.ecr.eu-west-2.amazonaws.com/chatapp-nginx
   affinity:
     zone1: eu-west-2a
